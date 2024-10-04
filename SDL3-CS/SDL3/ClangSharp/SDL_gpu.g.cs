@@ -653,10 +653,10 @@ namespace SDL
         public SDLBool enable_color_write_mask;
 
         [NativeTypeName("Uint8")]
-        public byte padding2;
+        public byte padding1;
 
         [NativeTypeName("Uint8")]
-        public byte padding3;
+        public byte padding2;
     }
 
     public unsafe partial struct SDL_GPUShaderCreateInfo
