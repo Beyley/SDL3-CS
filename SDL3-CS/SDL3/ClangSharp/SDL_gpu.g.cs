@@ -175,6 +175,48 @@ namespace SDL
         SDL_GPU_TEXTUREFORMAT_D32_FLOAT,
         SDL_GPU_TEXTUREFORMAT_D24_UNORM_S8_UINT,
         SDL_GPU_TEXTUREFORMAT_D32_FLOAT_S8_UINT,
+        SDL_GPU_TEXTUREFORMAT_ASTC_4x4_UNORM,
+        SDL_GPU_TEXTUREFORMAT_ASTC_5x4_UNORM,
+        SDL_GPU_TEXTUREFORMAT_ASTC_5x5_UNORM,
+        SDL_GPU_TEXTUREFORMAT_ASTC_6x5_UNORM,
+        SDL_GPU_TEXTUREFORMAT_ASTC_6x6_UNORM,
+        SDL_GPU_TEXTUREFORMAT_ASTC_8x5_UNORM,
+        SDL_GPU_TEXTUREFORMAT_ASTC_8x6_UNORM,
+        SDL_GPU_TEXTUREFORMAT_ASTC_8x8_UNORM,
+        SDL_GPU_TEXTUREFORMAT_ASTC_10x5_UNORM,
+        SDL_GPU_TEXTUREFORMAT_ASTC_10x6_UNORM,
+        SDL_GPU_TEXTUREFORMAT_ASTC_10x8_UNORM,
+        SDL_GPU_TEXTUREFORMAT_ASTC_10x10_UNORM,
+        SDL_GPU_TEXTUREFORMAT_ASTC_12x10_UNORM,
+        SDL_GPU_TEXTUREFORMAT_ASTC_12x12_UNORM,
+        SDL_GPU_TEXTUREFORMAT_ASTC_4x4_UNORM_SRGB,
+        SDL_GPU_TEXTUREFORMAT_ASTC_5x4_UNORM_SRGB,
+        SDL_GPU_TEXTUREFORMAT_ASTC_5x5_UNORM_SRGB,
+        SDL_GPU_TEXTUREFORMAT_ASTC_6x5_UNORM_SRGB,
+        SDL_GPU_TEXTUREFORMAT_ASTC_6x6_UNORM_SRGB,
+        SDL_GPU_TEXTUREFORMAT_ASTC_8x5_UNORM_SRGB,
+        SDL_GPU_TEXTUREFORMAT_ASTC_8x6_UNORM_SRGB,
+        SDL_GPU_TEXTUREFORMAT_ASTC_8x8_UNORM_SRGB,
+        SDL_GPU_TEXTUREFORMAT_ASTC_10x5_UNORM_SRGB,
+        SDL_GPU_TEXTUREFORMAT_ASTC_10x6_UNORM_SRGB,
+        SDL_GPU_TEXTUREFORMAT_ASTC_10x8_UNORM_SRGB,
+        SDL_GPU_TEXTUREFORMAT_ASTC_10x10_UNORM_SRGB,
+        SDL_GPU_TEXTUREFORMAT_ASTC_12x10_UNORM_SRGB,
+        SDL_GPU_TEXTUREFORMAT_ASTC_12x12_UNORM_SRGB,
+        SDL_GPU_TEXTUREFORMAT_ASTC_4x4_FLOAT,
+        SDL_GPU_TEXTUREFORMAT_ASTC_5x4_FLOAT,
+        SDL_GPU_TEXTUREFORMAT_ASTC_5x5_FLOAT,
+        SDL_GPU_TEXTUREFORMAT_ASTC_6x5_FLOAT,
+        SDL_GPU_TEXTUREFORMAT_ASTC_6x6_FLOAT,
+        SDL_GPU_TEXTUREFORMAT_ASTC_8x5_FLOAT,
+        SDL_GPU_TEXTUREFORMAT_ASTC_8x6_FLOAT,
+        SDL_GPU_TEXTUREFORMAT_ASTC_8x8_FLOAT,
+        SDL_GPU_TEXTUREFORMAT_ASTC_10x5_FLOAT,
+        SDL_GPU_TEXTUREFORMAT_ASTC_10x6_FLOAT,
+        SDL_GPU_TEXTUREFORMAT_ASTC_10x8_FLOAT,
+        SDL_GPU_TEXTUREFORMAT_ASTC_10x10_FLOAT,
+        SDL_GPU_TEXTUREFORMAT_ASTC_12x10_FLOAT,
+        SDL_GPU_TEXTUREFORMAT_ASTC_12x12_FLOAT,
     }
 
     public enum SDL_GPUTextureType
@@ -1334,6 +1376,10 @@ namespace SDL
         [return: NativeTypeName("bool")]
         public static extern SDLBool SDL_GPUTextureSupportsSampleCount(SDL_GPUDevice* device, SDL_GPUTextureFormat format, SDL_GPUSampleCount sample_count);
 
+        [DllImport("SDL3", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: NativeTypeName("Uint32")]
+        public static extern uint SDL_CalculateGPUTextureFormatSize(SDL_GPUTextureFormat format, [NativeTypeName("Uint32")] uint width, [NativeTypeName("Uint32")] uint height, [NativeTypeName("Uint32")] uint depth_or_layer_count);
+
         [NativeTypeName("#define SDL_GPU_TEXTUREUSAGE_SAMPLER (1u << 0)")]
         public const uint SDL_GPU_TEXTUREUSAGE_SAMPLER = (1U << 0);
 
@@ -1424,32 +1470,32 @@ namespace SDL
         [NativeTypeName("#define SDL_PROP_GPU_CREATETEXTURE_D3D12_CLEAR_STENCIL_UINT8 \"SDL.gpu.createtexture.d3d12.clear.stencil\"")]
         public static ReadOnlySpan<byte> SDL_PROP_GPU_CREATETEXTURE_D3D12_CLEAR_STENCIL_UINT8 => "SDL.gpu.createtexture.d3d12.clear.stencil"u8;
 
-        [NativeTypeName("#define SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOL \"SDL.gpu.device.create.debugmode\"")]
-        public static ReadOnlySpan<byte> SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOL => "SDL.gpu.device.create.debugmode"u8;
+        [NativeTypeName("#define SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN \"SDL.gpu.device.create.debugmode\"")]
+        public static ReadOnlySpan<byte> SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN => "SDL.gpu.device.create.debugmode"u8;
 
-        [NativeTypeName("#define SDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOL \"SDL.gpu.device.create.preferlowpower\"")]
-        public static ReadOnlySpan<byte> SDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOL => "SDL.gpu.device.create.preferlowpower"u8;
+        [NativeTypeName("#define SDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN \"SDL.gpu.device.create.preferlowpower\"")]
+        public static ReadOnlySpan<byte> SDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN => "SDL.gpu.device.create.preferlowpower"u8;
 
         [NativeTypeName("#define SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING \"SDL.gpu.device.create.name\"")]
         public static ReadOnlySpan<byte> SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING => "SDL.gpu.device.create.name"u8;
 
-        [NativeTypeName("#define SDL_PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOL \"SDL.gpu.device.create.shaders.private\"")]
-        public static ReadOnlySpan<byte> SDL_PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOL => "SDL.gpu.device.create.shaders.private"u8;
+        [NativeTypeName("#define SDL_PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOLEAN \"SDL.gpu.device.create.shaders.private\"")]
+        public static ReadOnlySpan<byte> SDL_PROP_GPU_DEVICE_CREATE_SHADERS_PRIVATE_BOOLEAN => "SDL.gpu.device.create.shaders.private"u8;
 
-        [NativeTypeName("#define SDL_PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOL \"SDL.gpu.device.create.shaders.spirv\"")]
-        public static ReadOnlySpan<byte> SDL_PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOL => "SDL.gpu.device.create.shaders.spirv"u8;
+        [NativeTypeName("#define SDL_PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOLEAN \"SDL.gpu.device.create.shaders.spirv\"")]
+        public static ReadOnlySpan<byte> SDL_PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOLEAN => "SDL.gpu.device.create.shaders.spirv"u8;
 
-        [NativeTypeName("#define SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXBC_BOOL \"SDL.gpu.device.create.shaders.dxbc\"")]
-        public static ReadOnlySpan<byte> SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXBC_BOOL => "SDL.gpu.device.create.shaders.dxbc"u8;
+        [NativeTypeName("#define SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXBC_BOOLEAN \"SDL.gpu.device.create.shaders.dxbc\"")]
+        public static ReadOnlySpan<byte> SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXBC_BOOLEAN => "SDL.gpu.device.create.shaders.dxbc"u8;
 
-        [NativeTypeName("#define SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOL \"SDL.gpu.device.create.shaders.dxil\"")]
-        public static ReadOnlySpan<byte> SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOL => "SDL.gpu.device.create.shaders.dxil"u8;
+        [NativeTypeName("#define SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN \"SDL.gpu.device.create.shaders.dxil\"")]
+        public static ReadOnlySpan<byte> SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN => "SDL.gpu.device.create.shaders.dxil"u8;
 
-        [NativeTypeName("#define SDL_PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOL \"SDL.gpu.device.create.shaders.msl\"")]
-        public static ReadOnlySpan<byte> SDL_PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOL => "SDL.gpu.device.create.shaders.msl"u8;
+        [NativeTypeName("#define SDL_PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOLEAN \"SDL.gpu.device.create.shaders.msl\"")]
+        public static ReadOnlySpan<byte> SDL_PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOLEAN => "SDL.gpu.device.create.shaders.msl"u8;
 
-        [NativeTypeName("#define SDL_PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOL \"SDL.gpu.device.create.shaders.metallib\"")]
-        public static ReadOnlySpan<byte> SDL_PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOL => "SDL.gpu.device.create.shaders.metallib"u8;
+        [NativeTypeName("#define SDL_PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOLEAN \"SDL.gpu.device.create.shaders.metallib\"")]
+        public static ReadOnlySpan<byte> SDL_PROP_GPU_DEVICE_CREATE_SHADERS_METALLIB_BOOLEAN => "SDL.gpu.device.create.shaders.metallib"u8;
 
         [NativeTypeName("#define SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING \"SDL.gpu.device.create.d3d12.semantic\"")]
         public static ReadOnlySpan<byte> SDL_PROP_GPU_DEVICE_CREATE_D3D12_SEMANTIC_NAME_STRING => "SDL.gpu.device.create.d3d12.semantic"u8;

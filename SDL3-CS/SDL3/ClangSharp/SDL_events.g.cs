@@ -139,6 +139,11 @@ namespace SDL
         SDL_EVENT_CAMERA_DEVICE_DENIED,
         SDL_EVENT_RENDER_TARGETS_RESET = 0x2000,
         SDL_EVENT_RENDER_DEVICE_RESET,
+        SDL_EVENT_RENDER_DEVICE_LOST,
+        SDL_EVENT_PRIVATE0 = 0x4000,
+        SDL_EVENT_PRIVATE1,
+        SDL_EVENT_PRIVATE2,
+        SDL_EVENT_PRIVATE3,
         SDL_EVENT_POLL_SENTINEL = 0x7F00,
         SDL_EVENT_USER = 0x8000,
         SDL_EVENT_LAST = 0xFFFF,
@@ -871,7 +876,7 @@ namespace SDL
         public byte* data;
     }
 
-    public partial struct SDL_ClipboardEvent
+    public unsafe partial struct SDL_ClipboardEvent
     {
         public SDL_EventType type;
 
@@ -880,6 +885,15 @@ namespace SDL
 
         [NativeTypeName("Uint64")]
         public ulong timestamp;
+
+        [NativeTypeName("bool")]
+        public SDLBool owner;
+
+        [NativeTypeName("Sint32")]
+        public int n_mime_types;
+
+        [NativeTypeName("const char **")]
+        public byte** mime_types;
     }
 
     public partial struct SDL_SensorEvent

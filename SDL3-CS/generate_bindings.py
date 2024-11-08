@@ -24,6 +24,7 @@ Example:
 
 import json
 import pathlib
+import platform
 import re
 import subprocess
 import sys
@@ -260,12 +261,33 @@ base_command = [
     "char=byte",
     "wchar_t *=IntPtr",  # wchar_t has a platform-defined size
     "bool=SDLBool",  # treat bool as C# helper type
+    "__va_list=byte*",
+    "__va_list_tag=byte",
+    "Sint64=long",
+    "Uint64=ulong",
+
+    "--with-type",
+    "*=int",  # all enum types should be ints by default
+
+    "--nativeTypeNamesToStrip",
+    "unsigned int",
 
     "--define-macro",
     "SDL_FUNCTION_POINTER_IS_VOID_POINTER",
+    "SDL_SINT64_C(c)=c ## LL",
+    "SDL_UINT64_C(c)=c ## ULL",
+    "SDL_DECLSPEC=",  # Not supported by llvm
 
+    # Undefine platform-specific macros - these will be defined on a per-case basis later.
     "--additional",
     "--undefine-macro=_WIN32",
+    "--undefine-macro=linux",
+    "--undefine-macro=__linux",
+    "--undefine-macro=__linux__",
+    "--undefine-macro=unix",
+    "--undefine-macro=__unix",
+    "--undefine-macro=__unix__",
+    "--undefine-macro=__APPLE__",
 ]
 
 
@@ -288,14 +310,14 @@ def run_clangsharp(command, header: Header):
     return header.output_file()
 
 
-# regex for ClangSharp-generated SDL functions
-generated_function_regex = re.compile(r"public static extern \w+\** (SDL_\w+)\(")
+# regex for ClangSharp-generated SDL functions and enums
+generated_symbol_regex = re.compile(r"public (enum|static extern \w+\**) (SDL_\w+)")
 
 
-def get_generated_functions(file):
+def get_generated_symbols(file):
     with open(file, "r", encoding="utf-8") as f:
-        for match in generated_function_regex.finditer(f.read()):
-            yield match.group(1)
+        for match in generated_symbol_regex.finditer(f.read()):
+            yield match.group(2)
 
 
 def generate_platform_specific_headers(sdl_api, header: Header, platforms):
@@ -303,15 +325,15 @@ def generate_platform_specific_headers(sdl_api, header: Header, platforms):
 
     print(f"💠 {header} platform agnostic")
     platform_agnostic_cs = run_clangsharp(base_command, header)
-    platform_agnostic_functions = list(get_generated_functions(platform_agnostic_cs))
+    platform_agnostic_symbols = list(get_generated_symbols(platform_agnostic_cs))
     output_files = [platform_agnostic_cs]
 
     for (defines, suffix, platform_name) in platforms:
         command = base_command + ["--define-macro"] + defines
 
-        if platform_agnostic_functions:
+        if platform_agnostic_symbols:
             command.append("--exclude")
-            command.extend(platform_agnostic_functions)
+            command.extend(platform_agnostic_symbols)
 
         if all_functions:
             command.append("--with-attribute")
@@ -340,6 +362,11 @@ def should_skip(solo_headers: list[Header], header: Header):
 
 def main():
     solo_headers = [make_header_fuzzy(header_name) for header_name in sys.argv[1:]]
+
+    if platform.system() != "Windows":
+        base_command.extend([
+            "--include-directory", csproj_root / "include"
+        ])
 
     prepare_sdl_source()
 
